@@ -1,0 +1,38 @@
+S3 Class -01
+================
+
+TOPIC : S3 (Simple Storage Service)
+========================================
+
+There are 3 types of storages are there
+
+1. EBS -----------------> Block level storage
+2. S3  -----------------> Oject level storage
+3. EFS -----------------> File system storage
+
+each account : 100 buckets
+first 5GB free
+each bucket: 5TB
+safe & secure
+versioning
+rules to create a bucket: should be unique name
+starts & ends with: alpha or number
+static website: host
+
+starts here to create
+
+region based & globalbased 
+
+go to aws dashboard -------------> search amazon s3---------> select buckets-------> create bucket---------> general purpose----> bucker name: must be unique
+select ACL enable-----------> object ownership: object owner preffered----------> tick block of public access-------> bucket versioning: enable--------------->
+--------> create ---------> ok
+
+select and open created bucket----------> 
+
+
+
+we can't delete buckets directly, first we need to keep the bucket empty like need to remove objects which present inside the bucket
+
+
+
+
