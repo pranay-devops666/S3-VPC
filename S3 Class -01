@@ -4,7 +4,7 @@ S3 Class -01
 TOPIC : S3 (Simple Storage Service)
 ========================================
 
-There are 3 types of storages are there
+There are 3 types of storages are there 
 
 1. EBS -----------------> Block level storage
 2. S3  -----------------> Oject level storage
