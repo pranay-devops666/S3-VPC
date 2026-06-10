@@ -90,6 +90,10 @@ we can't upload multiple files in S3
 
 aws s3 ls s3://bucket name ---------------------> command to view list of buckets
 
+we can delete objects inside a bucket like below command
+
+aws s3 rm s3://kops.pranay.k8s --recursive -----------------------> command to delete objects inside a bucket like below
+
 
 
 
