@@ -61,7 +61,34 @@ Need ACL(Access Control List) to share the objects in S3 bucket.
 
 
 
+Now we will learn to create S3 Bucket through CLI
 
+launch one ec2-instance -------> name:------> t3.micro---------> with key pair-------> security groups--------> ebs volume: 10------> launch
+
+here CLI commands to create S3 bucket
+
+CLI has one syntax to create a S3 bucket
+
+aws s3 ls -------------->
+
+Search for an IAM ------> select roles------> click on create roles----->select aws services -------> select EC2 ----------> next ----> S3 full access -----> next
+name:myS3-role ---------> create role
+
+search ec2--------> go to instances ----->select the instance ------> actions -----> security --------> attach IAM role ------> update IAM role
+
+
+aws s3 ls -------------->
+
+
+aws s3 mb s3://pranay.kops.io -----------------> command to create a bucket through CLI
+
+aws s3 rb s3://pranay.kops.io -----------------> command to delete a bucket through CLI
+
+aws s3 cp index.html s3://kops.pranay.k8s --------------> command to copy the s3 bucket through CLI 
+
+we can't upload multiple files in S3
+
+aws s3 ls s3://bucket name ---------------------> command to view list of buckets
 
 
 
