@@ -9,29 +9,51 @@ There are 3 types of storages are there
 1. EBS -----------------> Block level storage
 2. S3  -----------------> Oject level storage
 3. EFS -----------------> File system storage
+EFS --------------------> it is used to replicate the data from one server to another server for example if we created a file in server 1 means that created file
+need to come in server 2 as well for this purpose we use EFS 
 
-each account : 100 buckets
+for each account : we can create 100 buckets
 first 5GB free
-each bucket: 5TB
+for each bucket: we can store data upto 5TB
 safe & secure
 versioning
-rules to create a bucket: should be unique name
+
+rules to create a bucket:
+==========================
+should be need a unique name to create a bucket
 starts & ends with: alpha or number
-static website: host
+we can host static website for using S3
 
 starts here to create
+==========================
 
-region based & globalbased 
+any kind of cloud resource we can create 3 ways 1. Manual way 2. Through CLI 3. Through Terraform
+
+First we learn a manual way to create a bucket like below
+
+S3 is region based & globalbased services that means if we create a bucket in any of the region we can see any one of the region it is globally unique 
 
 go to aws dashboard -------------> search amazon s3---------> select buckets-------> create bucket---------> general purpose----> bucker name: must be unique
-select ACL enable-----------> object ownership: object owner preffered----------> tick block of public access-------> bucket versioning: enable--------------->
---------> create ---------> ok
+select ACL(Access Control List) enable-----------> object ownership: object owner preffered----------> tick block of public access-------> 
+bucket versioning: enable---------------> create ---------> ok
 
 select and open created bucket----------> 
 
 
+we can't delete buckets directly, first we need to keep the bucket empty like need to remove objects which present inside the bucket afer that wecan delete the
+bucket easily
 
-we can't delete buckets directly, first we need to keep the bucket empty like need to remove objects which present inside the bucket
+select and open created bucket----------> select copy S3 URI that means 
+
+select copy S3 URI that means we will get that created S3 path like s3://aws.bucket.name/object name
+
+In S3 we can do restore deleted objects also like if we select show versions option button we can see deleted objects and easily download locally and again we can 
+upload it.
+
+Select file or any object inside a bucket -----------> select actions---------> select option rename ------> here we can easily rename any ------> save changes
+
+we can't delete buckets directly, first we need to keep the bucket empty like need to remove objects which present inside the bucket afer that wecan delete the
+bucket easily
 
 
 
