@@ -1,6 +1,8 @@
 VPC Class -01
 ==================
 
+VPC explanation overall how it works how request will go to a subnets, public & private subnets
+
 
 How many clouds we have ? 1. service model 2. Deployment model(its has 4 models public, private, hybrid & community)
 
