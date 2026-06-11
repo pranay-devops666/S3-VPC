@@ -1,2 +1,36 @@
 VPC Class -01
 ==================
+
+
+How many clouds we have ? 1. service model 2. Deployment model(its has 4 models public, private, hybrid & community)
+
+
+how VPC workflow works is
+Internet Gate Way (IGW) it will send every request come from internet allows inside to it allows the request from internet to network, inside having a subnet that why 
+request will go to first public subnet again here ROUTE TABLE will present here, Route table will allow request from the internet, next request will go to application,
+(Network Address Translator)(NAT) what NAT will do is if the credentials all are correct means it will call to API, so through this NAT the request will go from public 
+subnet to private subnet, in here private subnet having server application so finally this application output will show.
+
+Subnets has 2 types 1. Public Subnet & 2. Private Subnet
+
+IGW-------> ROUTE TABLE-----> PUBLIC SUBNET------>PRIVATE SUBNET
+
+Lets create VPC like realtime below
+
+search in AWS dashboard as VPC ------------> create vpc ---------> select vpc only --------> name: myvpc---------> IPv4 CIDR: 10.0.0.0/17 (CIDR block size must be 
+between /16 and /28) ----------> 
+
+CIDR range this means servers will get created inside vpc, vpc will be created after that divide small parts as called subnets servers will get
+created inside this subnets for every server will have a public IP & private Ip Public Ip will provide from AWS and private IP will come from VPC 
+
+
+
+what is meat by subnet is by dividing a large network into a small small networks called as subnets.
+
+aws subnet calculator ----------> go to this website to know how much need to maintain cidr everything
+
+
+
+
+
+
