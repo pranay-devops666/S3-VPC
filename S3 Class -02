@@ -1,4 +1,255 @@
 S3 Class -02
 ================
 
+S3 Bucket creation using Jenkins, Terraform and web host
+
+In this here we will learn how to create S3  1.Through Jenkins 2.Through Terraform File & 3. How to make web host through S3 (we can do static & 
+dynamic web host as well by using S3 )
+
+First launch one instance 
+
+Launch ec2-instance------> type: c7i-flex-large-----------> with key pair ---------------> jenkins security group -----------> ebs: 10 gb ----------> launch instance
+
+
+Launch and connect ec2-instance
+
+Install Jenkins, Git in it & Terraform as well
+
+Go to Jenkins dashboard and create one pipeline Job & install suggested plugins as pipeline view stage plugin, S3 supposrted plugin as well as 
+S3 publisher and install it, Artifact manager on S3 and install it
+
+
+to create S3  1.Through Jenkins
+==================================
+
+
+pipeline {
+    agent any
+
+    stages {
+        stage ("Code") {
+            steps {
+                git "https://github.com/devops0014/one.git"
+            }
+        }
+    }
+}
+
+
+save and build
+
+
+for above we build only stage-1 
+Now below we will do build second stage-2 as tool name maven
+
+go to jenkins dashboard----------> select manage jenkins----------> select tools ------------> add maven -------> name: mymaven ---------> save
+
+
+
+pipeline {
+    agent any
+    tools {
+        maven "mymaven"
+    }
+    stages {
+        stage ("Code") {
+            steps {
+                git "https://github.com/devops0014/one.git"
+            }
+        }
+        stage ("Build") {
+            steps {
+                sh 'mvn clean package -DskipTests'
+            }
+        }
+    }
+}
+
+
+save and build
+
+
+Note:
+=====
+If we give give clean package what will happen is for suppose if we have any target folder previously means it will get deleted 
+and having source code we will do compile after code complie, unit test perform will be done, after that Artifact will get generate
+
+some projects people will do Build & Unit test seperately like using line in pipeline as -DskipTests: Compiles the tests but does not execute them.
+-Dmaven.test.skip=true: Skips both the compliation and the execution of tests entirely.
+
+
+pipeline {
+    agent any
+    tools {
+        maven "mymaven"
+    }
+    stages {
+        stage ("Code") {
+            steps {
+                git "https://github.com/devops0014/one.git"
+            }
+        }
+        stage ("Build") {
+            steps {
+                sh 'mvn clean package -DskipTests'
+            }
+        }
+        stage ("UnitTest") {
+           steps {
+              sh 'mvn test'
+           }
+        }
+    }
+}
+
+
+save and build
+
+for above stages builds are done
+
+Now we need to build Artifact stage using S3 lets see how ?
+lets suppose i have jenkins pipeline code, build, unit test, artifacts & deploy having like this different stages
+now what the file we are getting war file through this pipeline we need to take that WAR file need to store in S3 bucket 
+So if we observe aws secure cloud nobody can store the data in here need authentication permission who will allow permission is IAM 
+what we will do is will create one user and give S3 full access, 
+go to plugins ---------> search as S3 publisher and install it, Artifact manager on S3 and install it
+now go to pipeline syntax and select s3upload: Publish artifact to S3 Bucket ---------> sorce: target/*.war-----------> Destination bucket: paste here bucket name
+-----> select bucket region: give here region present-------> tick no uploder on build failure------> generate pipeline script
+
+go to manage jenkins ---------->select system jenkins ---------> search S3-------> add -------> name:myS3 bucket-----------> paste here created user access key
+& sedret key here
+
+Go to seach IAM ------> select user--------> create user--------> name: jenkins S3 --------> next----> attach policies directly------> give AmazonS3FullAccess--->
+----->next---------> create user
+select and open that created user ---------> select security credentials ---------> create access keys --------> others-------> next-----> create access key
+
+pipeline {
+    agent any
+    tools {
+        maven "mymaven"
+    }
+    stages {
+        stage ("Code") {
+            steps {
+                git "https://github.com/devops0014/one.git"
+            }
+        }
+        stage ("Build") {
+            steps {
+                sh 'mvn clean package -DskipTests'
+            }
+        }
+        stage ("UnitTest") {
+           steps {
+              sh 'mvn test'
+           }
+        }
+        stage (Artifact) {
+            steps {
+                copy & paste here generated pipeline syntax script 
+            }
+        }
+    }
+}
+
+
+save and build
+
+
+To create S3  1.Through Terraform File
+=========================================
+
+Now we will do create S3 bucket through Terraform
+===================================================
+
+vim provider.tf ------------------------------------------>
+
+provider "aws" {
+region = "us-east-2"
+}
+
+:wq ------------------------------------------>
+
+vim main.tf ------------------------------------------>
+
+resource "aws_s3_bucket" "mybucket" {
+bucket = "bucketname"
+}
+
+:wq ------------------------------------------>
+
+as of now bucket will get created 
+now we will do enable versioning also after creating bucket also
+
+vim main.tf ------------------------------------------>
+
+resource "aws_s3_bucket" "mybucket" {
+bucket = "bucketname"
+}
+
+resource "aws_s3_bucket_versioning" "bucketversioning" {
+  bucket = aws_s3_bucket.mybucket.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+:wq ------------------------------------------>
+
+
+terrform init ----------------------------------------->
+
+now if we give terraform plan we will get error is permission denied as IAM permissions previously given for Jenkins not for Terraform 
+
+aws configure ---------------------------------------->
+
+access key: give here access key
+secret key: give here secret key
+region: give region also here
+
+now give terrafom plan ----------------------------------->
+
+It will work now
+
+terraform apply --aouto-approve ------------------------------->
+
+very very important to know is as of now we know how to store war files in a bucket 
+need to know how to store state files is very very important
+
+for suppose if we create anything like created ec2-instance, s3 bucket we will get state files 
+now i want to store that state files in this S3 Bucket for that we will write seperate backend file for that
+
+vim backend.tf ------------------------------>
+
+terraform {
+backend "s3" {
+bucket = "bucketname"
+key = "babu/tarraform.tfstate"
+region = "us-east-2"
+}
+}
+
+:wq ------------------------------------------->
+
+terraform init ------------------------------------------->
+terraform plan ------------------------------------------->
+terraform apply ------------------------------------------->
+
+
+3. How to make web host through S3
+=======================================
+
+we can do static & dynamic web host as well by using S3 for this we need html file
+
+select created S3 bucket------------> and upload html file in it ----------> select properties -------> go to last option ---------> do enable static website 
+hosting --------> index document: index.html -------------> save changes
+
+after this one dns name will name will give for that dns name we can access the application easily for suppose if we got any error means we need to give enable ACL 
+permission to the bucket & object as well like below
+
+select bucket ------------->properties ----------> select block public access---------> do enabe Access Control List-------> save changes 
+
+now we can able to access the application easily
+
+
 
