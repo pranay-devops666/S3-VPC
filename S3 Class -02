@@ -252,4 +252,24 @@ select bucket ------------->properties ----------> select block public access---
 now we can able to access the application easily
 
 
+In additionally another option will have in S3 is CRR (Cross Region Replication) means to do S3 replications from one account to another account
+
+Finally data should need to be done replication bucket to bucket for that we will use CRR (Cross Region Replication)
+
+lets see how pratically is like below
+
+example create 2 buckets 1. is Source bucket & 2. is destination bucket and do enable ACL & versioning as well
+
+Now if any object upload in source bucket that object should need to go in destination bucket same way 
+if any object upload in destination bucket that object should need to go in source bucket
+
+for that we will use CRR (Cross Region Replication) need to be enable that
+
+select source bucket----------> select management-----------> create replication rule ------> name: rule1-------> status: enable -------------> select apply 
+to all objects in the bucket ---------> destination: bucket name : give here destination bucket name ---------> iAM role: create new role------> save
+
+same process will do in destination bucket as well
+
+select destination bucket----------> select management-----------> create replication rule ------> name: rule1-------> status: enable -------------> select apply 
+to all objects in the bucket ---------> destination: bucket name : give here destination bucket name ---------> iAM role: create new role------> save
 
