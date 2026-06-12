@@ -1,2 +1,119 @@
 VPC Class -03
 ================
+
+How to create Public & Private Subnets and how to connect creaed Private subnet instance
+
+
+lets start here
+
+In interviews mostly asked questions are peering connection
+
+In Vpc application servers are present in private subnets and we can't connect it 
+
+Now requirement is need to create one VPC in that VPC inside will be need 2 subnets one is public and another one is private
+
+Select VPC -----> create vpc -----> name:myvpc ------> IPV4 cidr:10.0.0.0/20 -------> tenancy: default --------> create vpc
+
+if we want to get host names for our servers like public and private host names need to do configuration like below
+select created vpc --------> actions --------> edit vpc settings -------> select DNS settings do enable DNS hostnames ---------> save
+
+Now we need to create subnets 
+
+select subnet --------> create subnet ---------> select created subnet --------> name: public subnet ------> availability zone: us-east-2a --------> 
+IPV4 VPC CIDR block: 10.1.0./24 ------->add another subnet also create subnet ---------> name: private subnet ------>availability zone: us-east-2b --------> 
+IPV4 VPC CIDR block: 10.2.0./24 -------> create subnet
+
+select created Public subnet ----------> actions -------> edit subnet settings ----------> tick enable auto-assign public ipv4 address --------> save
+
+for private subnet we dont do
+
+Now need to create IGW 
+
+select IGW --------> create IGW ----------> name: my IGW --------> create ---------> attach a created vpc
+
+I have 2 subnets means need two route tables
+
+select deafult route table and rename it as Public route table ------> need to attach IGW for public route table ----------> select route table ------> action
+-------> edit routes ----------> 0.0.0/0 ------> select created IGW and do attach here-------> save changes
+
+for this public route table need to be attach public subnet 
+
+select public route table --------> action ---------> edit subnet association -------> public sunet -------> save changes
+
+Next need to create Private route table for this need NAT gate way
+
+select NAT gateway -------> create NAT gateway -------> name: private NAT gateway ------> select created VPC and do attach ----------> public-------> automatic 
+------>create
+
+Now need to create Private route table 
+
+select route table --------> create route table -------> name: private route table --------> create 
+
+select this created private route table --------> actions --------> edit routes ------> add route: 0.0.0/0 -----> select here created NAT gate way and do attach here
+--------> save -----> actions ------> edit subnet association -------> select private subnet -------> save association
+
+If we want see all overview what we done is 
+
+select created VPC --------> select resource map ---->it will show pictorial flow diagram
+
+VPC ------> SUBNETS (2) created Public & Private subnets -----> Public subnet has one route table and had attached a IGW, private subnet has one private route 
+table and had attached a NAT gateway
+
+Now our task is to create an one ec2-instance public subnet and one ec2-instance in private subnet
+
+go to ec2 --------> launch instances ------> name: public subnet -------> with key pair ------> t3.micro ---> network settings: edit:select created vpc here and
+select public subnet also to show auto-assign public-ip as enable ------> create security group : name: my public security group ------> all traffic, anywhere ----->
+ebs: 10 gb --------> launch instance 
+
+launch and connect this ec2-instance ---------> 
+
+give command as yum update -y ----------------------------------------------->
+
+yum install git -y ----------------------------------------------->
+
+yum install httpd -y ----------------------------------------------->
+
+systemctl start httpd ----------------------------------------------->
+
+here tools are getting installing means internet is allowing to install it 
+
+select this public ec2-instance public ip and paste in new tab ---------> it will works
+
+lets do launch private ec2-instance and try to do install all tools to test it is working or not 
+
+go to ec2 --------> launch instances ------> name: public subnet -------> with key pair ------> t3.micro ---> network settings: edit:select created vpc here and
+select public subnet also to show auto-assign public-ip as enable ------> create security group : name: my public security group ------> all traffic, anywhere ----->
+ebs: 10 gb --------> launch instance 
+
+launch and connect this ec2-instance ---------> we can't connect this private ec2-instance why because for this instance public ip is not generated 
+
+in real time application servers will be exist in inside private subnet and here private subnest app
+
+in real time how to connect this private ec2-instance is we called as APP SERVERS
+
+for to connect this private ec2-instance APP server we will use bashial host 
+
+we are using NAT to access the resources which are present in private subnets ex: AP server, DB server etc
+
+In real time how to connect this private ec2-instance is --------> first we need to get key piair from public ec2-instance to private ec2-instance like below
+
+In public ec2-instance give command as 
+
+vim keypairname.pem
+
+copy and paste here keypair existing date here and save it
+
+Now we need to connect this private ec2-instance 
+
+select private ec2-instance --------> click connect --------> select shh-client-------> copy both commands and paste in public ec2-instance like below
+
+chmod 400 "keypairname.pem" --------------------------------->
+ssh -i "keypairname.pem" ec2-instance@ip address --------------------------------->
+yes --------------------------------->
+
+Now we successfully connected to a private subnet ec2-instance for APPLICATION servers
+
+In real time inside a public subnet there will be a bashial host through that bashial host we will do connect
+
+
+
