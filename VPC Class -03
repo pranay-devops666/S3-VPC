@@ -131,6 +131,87 @@ will default means aceptor will became a my vpc or requestor will my vpc  means 
 
 select created this peering --------> action ------> accept request --------> as of now these created peering connector are been attached to a 2 vpcs but not attached to a route table
 why here route table came here means if the request need to go inside and touch to subnet means infornt of route table will be exist, infront of this IGW will be exist so we need route
-table-------> hee we need to add a rule for this peering 
+table-------> here we need to add a rule for this peering 
 
 select route tables ----------> select public route table
+
+
+How to create VPC through Terraform 
+======================================
+
+launch one instance for terraform --------> launch instanec--------> with key pair ----------> security groups ----------> ebs: 10 gb --------> launch and connect 
+
+Install terraform in it 
+
+vim provider.tf ------------------------------------>
+
+provider "aws" {
+region = "us-east-2a" 
+}
+
+:wq ------------------------------------>
+
+vim main.tf ------------------------------------>
+
+resource "aws_vpc" "myvpc" {
+tags = {
+Name = "TERRAFORM-VPC"
+}
+
+cidr_block = "10.0.0.0/21"
+instance_tenancy = "default"
+enable_dns_hostnames = "true"
+}
+
+resource "aws_subnet" "mysubnet" {
+vpc_id = aws_vpc.myvpc.id
+tags = {
+Name = "Terraform-Subnet"
+}
+availability_zone = "us-east-2a"
+cidr_block = "10.0.1.0/24"
+map_public_ip_on_launch = "true"
+}
+
+resource "aws_internet_gateway" "myigw" {
+vpc_idm= aws_vpc.myvpc.id
+tags = {
+Name = "TERRAFORM-IGW"
+}
+}
+
+resource "aws_route_table" "myrt" {
+vpc_id = aws_vpc.myvpc.id
+
+route {
+cidr_block = "0.0.0.0/0"
+gateway_id = aws_internet_gateway.myigw.id
+}
+
+tags = {
+Name = "TERRAFORM=RT"
+}
+}
+
+resource "aws_route_table_association" "rt-ass"{
+subnet_id = aws_subnet.mysubnet.id
+route_table_id = aws_route_table.myrt.id
+}
+
+:wq ------------------------------------>
+
+terraform init ------------------------------------>
+
+terraform fmt ------------------------------------>
+
+terraform plan ------------------------------------>
+
+now we will get error is credentials error 
+
+need to create IAM role and give vpc permission to it
+
+terraform plan ------------------------------------>
+
+terraform apply auto-approve ------------------------------------>
+
+
