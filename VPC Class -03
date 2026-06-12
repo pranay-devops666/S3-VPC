@@ -1,7 +1,7 @@
 VPC Class -03
 ================
 
-How to create Public & Private Subnets and how to connect creaed Private subnet instance
+How to create Public & Private Subnets and how to connect creaed Private subnet instance, Creation of Peering connection for VPCS 
 
 
 lets start here
@@ -116,4 +116,21 @@ Now we successfully connected to a private subnet ec2-instance for APPLICATION s
 In real time inside a public subnet there will be a bashial host through that bashial host we will do connect
 
 
+VPC peering 
+===========
 
+For suppose i have 2 networks like vpc 1 & vpc 2, vpc 1 ha sone server inside in it vpc 2 has one server inside in it making connection to communicate between these two network vpcs called 
+VPC peering connetors
+
+lets take 2 vpcs and create 2 ec2-insances in it inside launch and connect both instances
+
+to make connection both instances we need to use peering connectors like below
+
+search as peering connections ----------> create peering connection -------> name: my peering connectors ---------> here acceptor & receptors will be there --------> for example requestor
+will default means aceptor will became a my vpc or requestor will my vpc  means aceptor will became a default -----> create 
+
+select created this peering --------> action ------> accept request --------> as of now these created peering connector are been attached to a 2 vpcs but not attached to a route table
+why here route table came here means if the request need to go inside and touch to subnet means infornt of route table will be exist, infront of this IGW will be exist so we need route
+table-------> hee we need to add a rule for this peering 
+
+select route tables ----------> select public route table
