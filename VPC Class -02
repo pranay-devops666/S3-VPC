@@ -91,5 +91,13 @@ First we need to create VPC --------> next we need to create IGW -------->next w
 attach the IGW to route table -------> next we need to create route table and to attach to a created vpc -------> 
 
 
+Select NAT gateeway --------> create NAT gate way------>name: my NAT gateway------->select created vpc --------> select public ------> create NAT gateway
 
+Now we need to attach this NAT gateway to a created Route table
+
+Go to route table -------> select created private route table -------> actions ------>editedit route propogation -------> select created NAT gateway -----> attach it
+
+How we will decide what is public & private is every subnet will have route tables by default need to be remember that 
+here for which ROUTE TABLE we will get IGW for that we will called as Public subnet
+for which ROUTE TABLE we will not  get IGW for that we will called as Private subnet
 
