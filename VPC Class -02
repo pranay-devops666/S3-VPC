@@ -1,2 +1,95 @@
 VPC Class -02
 ================
+
+Creating of VPC, IGW, Route Table, Public Subnets
+
+we will start learning how to create VPC in AWS dashboard like below
+
+first we will do create VPC through that VPC we will do create subnets
+
+IGW-------> Route Table-----> Subnets --------> Public subnet -----> private subnet
+
+search as vpc and select create VPC -------> name: myvpc --------> cidr range: 10.0.0.0/16 -------> select tenancy: dedicated(we will use this dedicated in 
+real time) dedicated means private for now here select default means public ----------> create VPC
+
+one vpc has been created , now we need to create subnets to divide this big network into a small small networks
+
+select subnets ------> create subnet -------> select created vpc ------> subnet name: subnet 1---------> availability zone: us-east-2a -------> IPV4 Cidr range:
+10.0.0.0/24 ----------> create subnet
+
+for this 10.0.0.0/24 we will get upto 128 IPS like below calculation
+
+10.0.0.0/25 = 128 IPS 
+
+10.0.0.0
+10.0.0.1
+10.0.0.2
+10.0.0.3
+10.0.0.4
+10.0.0.5
+10.0.0.6
+10.0.0.7
+10.0.0.8
+
+like this way upto 128 IPS will get
+10.0.0.127
+
+same like this way create another subnet as well 
+
+select subnets ------> create subnet -------> select created vpc ------> subnet name: subnet 2---------> availability zone: us-east-2b -------> IPV4 Cidr range:
+10.0.1.0/25 ----------> create subnet
+
+for this 10.0.1.0/25 we will get 128 like this calculation is 2 power 32-25 = 2 power 7 means 128 IPS in this 128 IPS reserved IPS are 4
+
+same like this way create another subnet as well 
+
+select subnets ------> create subnet -------> select created vpc ------> subnet name: subnet 3---------> availability zone: us-east-2c -------> IPV4 Cidr range:
+10.0.1.128/28 ----------> create subnet
+
+overall we created 3 subnets for created VPC
+
+now we need to create InternetGate Way to get internet allow for our created VPC to allow request from internet to our created VPC nee dto create IGW
+
+keep remeber for one vpc will have only one IGW
+
+select IGW --------> create IGW -------> name: myIGW ----------> now need to attach this created IGW -------> select created IGW --------> select actions---------->
+attach to vpc --------> select created vpc ---------> attach it ----------> save changes
+
+Now we need to create a Route Table 
+
+select Route Table ------------> create Route Table --------> name: my route table -------> select a created vpc -------> create route table -------> select 
+created Route table ---------> select actions ---------> edit routes ----------> add one  route here like 0.0.0./0 ---------> select & attach here created IGW
+-------> save changes
+
+as of now we attached the IGW to Route table the internet request  need to be hit Route Table through IGW 
+
+go to route table -------> select created route table --------> select actions --------> edit subnet association --------> select created 3 subnets------> save
+
+First we created one VPC --------> divided this VPC into a small small networks called as subnets subnet1 subnet2 subnet3 in different 3 zones ---------> next
+created IGW for to allow request to route table through IGW for that purrpose we created IGW -------->next that IGW attached to a route table ------->
+next this route table attached to a all 3 created subnets 
+
+as of now created subnet is Public Subnet only
+
+for suppose if we need private subnet means we will use NAT
+
+Launch one e2-instance-----------> name: myvpc----------> t3.micro---------> with key pair --------> in here nettwork setting select edit--------> select custom VPC
+which we created above automatically created 3 subnets will come here --------> Auto-assign-Public-Ip: enable (need to configure steps like below to become enable)
+select created 3 subnets ---------> select actions -----> edit subnet settings ------>enable Auto-assign-Public-Ip ---------> now need to create a new security
+group here ---------> edit create security group ------>name: my security groupvpc -------> Type: all traffic, anywhere ----------> launch instance
+
+we can this configure steps only for public subnet, for private subnetwill not occur this configuration  why means private subnets will not have public IPS
+
+Note to remeber here
+=====================
+For our ec3-instance having Auto-assign-Public-Ipis disabled means we wont get public IP for our server so we can't connect our server 
+
+Once we deleted vpc it will delete everything like subnets, route table, IGW all will get deleted
+
+
+First we need to create VPC --------> next we need to create IGW -------->next we will do create public subnet who will decide this public or private is IGW --------> 
+attach the IGW to route table -------> next we need to create route table and to attach to a created vpc -------> 
+
+
+
+
