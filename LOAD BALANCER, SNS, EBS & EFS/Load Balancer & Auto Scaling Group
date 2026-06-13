@@ -1,1 +1,115 @@
 Load Balancer & Auto Scaling Group
+========================================
+
+How to create Load Balancer, Target Groups & Auto Scaling Group
+
+
+For any kind of Application needs high Availabilty is very very important to provide that high Availabilty we will use Load Balancer & Auto Scaling Group
+
+If we want to distribute traffic equally to each server we need Load Balancer and to know performance of server health status as well we use Load Balancer
+
+Lrts start doing Load Balancer
+
+lets take 2 ec2-instance on two different availabity zones
+
+launch instance -------->name: server-1 -------> t3.micro ------> with key pair--------> network settings ------> edit: select zone here as us-east-2a ---------> security group ---------->my
+security groups ------> ebs: 8 gb  ---------> launch and connect
+
+launch instance -------->name: server-2 -------> t3.micro ------> with key pair--------> network settings ------> edit: select zone here as us-east-2b ---------> security group ---------->my
+security groups ------> ebs: 8 gb  ---------> launch and connect
+
+in those 2 servers do install web servers and run a small application in it to know how Load Balancer mechanism will works
+
+Launch and connect server-1
+
+yum install httpd -y && systemctl star httpd --------------------------------------------->
+
+cd /var/www/html/ ---------------------------------------------> this is default path of html
+
+vim index.html --------------------------------------------->
+
+
+<h1>Hello, from server-1</h1>
+
+:wq --------------------------------------------->
+
+copy the ec2-instance public -ip and paste in new tab
+
+Hello, from server-1 output will show 
+
+
+same process don in server-2 as well
+
+
+Launch and connect server-2
+
+yum install httpd -y && systemctl star httpd --------------------------------------------->
+
+cd /var/www/html/ ---------------------------------------------> this is default path of html
+
+vim index.html --------------------------------------------->
+
+<h1>Hello, from server-2</h1>
+
+:wq --------------------------------------------->
+
+copy the ec2-instance public -ip and paste in new tab
+
+Hello, from server-2 output will show
+
+
+Now application is running in both the servers
+
+Now i want to distribute the traffic equally means we need to create a Load Balancer, before going to create a Load Balancer we need to create and set a Target Group
+
+Target Group is nothing but a group of ec2-instances
+
+For example we have 2 servers related to App servers and having more servers related to for sonarqube having 1 server, to maintain eks have 1 server like this having different different
+servers, Traffic should need to be distribute in these 2 App servers only for that 2 App servers we need to make a Group for it called as Target Group
+
+Go to AWS Dashboard ---------> select Target Group ---------> Create Target Group ----------> Target Group Name: MyTargetGroup -------> Port: 80 --------> next
+
+select 2 servers----------> include as pending below --------> next -----------> create target group 
+
+Target Group has been created
+
+Load Balancer has 4 types 1. Application Load Balancer 2. Network Load Balancer 3. Gateway Load Balancer & 4. Classic Load Balancer
+
+In Interview thay will ask mostly Difference between 1. Application Load Balancer 2. Network Load Balancer 3. Gateway Load Balancer & 4. Classic Load Balancer
+
+select Load Balancer -----------> create -------------> name: MyLoadBalancer ----------->  select default VPC-------> select here which availabilty zones are in and subnets as well--------> 
+security groups: provide here the security group which has port number 8080 select our created MYSg-------------> protocol: httpd, port: 80 ----------> Target Group: select here created
+Target Group --------------> Create Load Balancer --------> it will take some time to come Active state
+
+Copy DNS name and paste in a new tab
+
+output will come like this  Hello from server-1 
+
+
+first request went to server-1
+
+again refresh  now first request go  to server-2
+
+output will come like this  Hello from server-2
+
+Traffic is disributing equally to both the servers
+
+Now if we add one more server how to attach it to this Target Group & Load Balancer is like below
+
+First launch 2 ec2-instancess on different availability zones 
+
+select created Target Groups -------> under down there is a option called Register targets -------> select now newly created ec2-instances ----------> include as pending below -------->
+register Target Group
+
+Now error will come is Traffic will go to server-1 & 2 and now newly created servers wont distribute te traffic why means we didn't enabled the availability zone in Load Balancer
+
+Select Created Load Balancer -------------> actions ----------> edit subnets  --------------> do enable newly created availabilty zone here and save changes --------- save
+
+Now the traffic will distribute all the servers
+
+do we want remove any server means go to Target group -----------> select which server need to remove -----------> click on de-register 
+
+
+
+Deployment has Auto Scaling Feature
+
