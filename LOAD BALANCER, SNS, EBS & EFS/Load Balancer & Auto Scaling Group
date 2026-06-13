@@ -113,3 +113,11 @@ do we want remove any server means go to Target group -----------> select which 
 
 Deployment has Auto Scaling Feature
 
+Auto Scaling Groups
+=========================
+
+For using Auto Scaling Group purpose is if we have some servers and CPU Threshold limit has 60% that CPU utilization Threshold limit has crossed means automatically one servers has be 
+to get created for this purpose we will use Auto Scaling Group
+
+How to create this Auto SCaling Group is like below
+
