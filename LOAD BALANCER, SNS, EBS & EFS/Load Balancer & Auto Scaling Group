@@ -121,3 +121,13 @@ to get created for this purpose we will use Auto Scaling Group
 
 How to create this Auto SCaling Group is like below
 
+In k8s if Pod has got deleted means again new POD will get created from a template 
+same like that way here in Auto Scaling Group we will use to create Launch Template, creating Launch Template new servers will get created automatically
+
+we need to create Launch Template and pass to a Auto Scaling Group for to maintain all requirements for servers to be get created like type of instance to be present, IAM for the server etc all
+
+Select Launch Template ------------> create --------> name: My Template -----------> version: this is version 1 --------> name tags: babu ---------> recently launched -------------->
+select amazon linux ---------> type: t3.micro --------> with key pair ----------> security groups: MYSG ----------> ebs: 8 gb -------> name: server name: ASG-Server -----> advanced details 
+----------> user data: here what script we wrote that script only apply here : # /bin/bash, sudo yum install -y, sudo yum install httpd -y, sudo systemctl enable httpd, sudo cat "Welcome to
+Auto Scaling ASG from babu">> /var/www/html/index.html ------------> 
+
