@@ -2,7 +2,7 @@ Load Balancer & Auto Scaling Group
 ========================================
 
 How to create Load Balancer, Target Groups & Auto Scaling Group
-
+=====================================================================
 
 For any kind of Application needs high Availabilty is very very important to provide that high Availabilty we will use Load Balancer & Auto Scaling Group
 
@@ -129,5 +129,18 @@ we need to create Launch Template and pass to a Auto Scaling Group for to mainta
 Select Launch Template ------------> create --------> name: My Template -----------> version: this is version 1 --------> name tags: babu ---------> recently launched -------------->
 select amazon linux ---------> type: t3.micro --------> with key pair ----------> security groups: MYSG ----------> ebs: 8 gb -------> name: server name: ASG-Server -----> advanced details 
 ----------> user data: here what script we wrote that script only apply here : # /bin/bash, sudo yum install -y, sudo yum install httpd -y, sudo systemctl enable httpd, sudo cat "Welcome to
-Auto Scaling ASG from babu">> /var/www/html/index.html ------------> 
+Auto Scaling ASG from babu">> /var/www/html/index.html ------------> create launch template
+
+Now we need to do attach this Launch Template to a Auto Scaling Group ----------> select Auto Scaling Greoup ---------.>create -------> Name: Auto Scaling Group ---------> templa: 
+select here created Launch Tmplate -------> next ------> select default VPC -------> select availability zone -------- > next ------> Load Balancer: Attach to an existing Load Balancer----->
+next ----------> desired capacity: 2 ---------> scaling limits min desired capacity: 1, max desired capacity: 4 -----> Target Value: 60 -------> next -------> Add notificationn: create 
+topic: My-ASG-Status ----------> with these recipients: gorantlapranay8@gmail.com ----------> next --------> create Auto Scaling Group 
+
+
+NOW TASK is 
+ ehh Auto scaling group dwara create ayna servers lo stress increase cheyandi 
+
+Increase stress in servers which are being created by Auto Scaling Groups ------> stress means cpu utilization limit
+
+
 
