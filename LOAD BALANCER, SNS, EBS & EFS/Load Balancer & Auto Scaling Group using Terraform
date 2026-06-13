@@ -1,1 +1,128 @@
 Load Balancer & Auto Scaling Group using Terraform
+======================================================
+
+Resources we are creating here is Creating one VPC, in that VPC will do create 2 subnets, for this 2 subnets will attach a route table< create IGW also 
+
+VPC ------> Subnets-1 & Subnets-2-------> route table ---------> IGW
+
+servers need to get create automatically through Auto Scaling Group in inside those 2 seubnets, Need Load Balancer to distribute traffic equally, ec2, for entire infra need Launch Template
+as well
+
+We will do this through Terraform
+
+Install Terraform
+
+vim provider.tf ---------------------------->
+
+provider "aws" {
+region = "us-east-2a"
+}
+
+:wq ---------------------------->
+
+vim vpc.tf ---------------------------->
+
+resource "aws_vpc" "myvpc" {
+tags = {
+Name = "Terraform-vpc"
+}
+
+cidr_block = "10.0.0.0/16"
+instance_tenancy = "default"
+enable_dns_hostname = "true"
+}
+
+:wq ---------------------------->
+
+vim subnets.tf ---------------------------->
+
+resource "aws_subnet" "subnet1" {
+vpc_id = aws_vpc.myvpc.id
+availability_zone = "us-east-2a"
+map_public_ip_on_launch = "true"
+
+tags = {
+Name = "Public-Subnet-1"
+}
+}
+
+resource "aws_subnet" "subnet2" {
+vpc_id = aws_vpc.myvpc.id
+cidr_block = "10.0.1.0/24"
+availability_zone = "us-east-2b"
+map_public_ip_on_launch = "true"
+
+tags = {
+Name = "Public-Subnet2"
+}
+}
+
+:wq ---------------------------->
+
+vim igw.tf ---------------------------->
+
+resource "aws_internet_gateway" "myigw" {
+tags = {
+Name = "Terraform-IGW"
+}
+
+vpc_id = aws_vpc.myvpc.id
+}
+
+:wq  ---------------------------->
+
+vim route_table.tf ---------------------------->
+
+resource "aws_route_table" "myrt" {
+tags = {
+Name = "TERRAFORM-RT"
+}
+
+vpc_id = aws_vpc.myvpc.id
+
+route {
+cidr_block = "0.0.0.0/0"
+gateway_id = aws_internet_gateway.myigw.id
+}
+}
+
+resource "aws_route_table_association" "subnet1_ass" {
+subnet_id = aws_subnet.mysubnet2.id
+route_table_id = aws_route_table.myrt.id
+}
+
+:wq ---------------------------->
+
+vim security.tf ---------------------------->
+
+resource "aws_security_group" "mysg" {
+name = "Terraform-sg"
+description = "this is created by terraform"
+vpc_id = aws_vpc.myvpc.id
+
+ingress {
+from_port = 22
+to_port = 22
+protocol = "tcp"
+cidr_block = ["0.0.0.0/0"]
+}
+
+ingress {
+from_port = 80
+to_port = 80
+protocol = "tcp"
+cidr_block = ["0.0.0.0/0"]
+}
+
+eggress {
+from_port = 0
+to_port = 0
+protocol = "-1"
+cidr_block = ["0.0.0.0/0"]
+}
+
+vim main.tf ------------------------------->
+
+
+
+
