@@ -1,4 +1,92 @@
 SNS & Cloud Watch
 ============================
 
+Need to Practice Once Compolsury
+======================================
+
+=============================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+### CloudWatch – Main Purpose
+
+**CloudWatch monitors AWS resources and applications.**
+
+**Interview Answer:**
+
+> "We use AWS CloudWatch to monitor servers, applications, CPU usage, memory, disk space, logs, and application health. 
+It helps us identify issues and create alerts when thresholds are exceeded."
+
+**Simple Example:**
+
+> "If EC2 CPU utilization goes above 80%, CloudWatch detects it and triggers an alarm."
+
+---
+
+### SNS – Main Purpose
+
+**SNS sends notifications and alerts.**
+
+**Interview Answer:**
+
+> "We use AWS SNS to send email notifications to the DevOps team whenever CloudWatch detects an issue such as high CPU usage, server downtime, application failure, or deployment failure."
+
+**Simple Example:**
+
+> "When CloudWatch detects CPU usage above 80%, it triggers SNS, and SNS sends an email notification to the team."
+
+---
+
+### Project-Based Interview Answer
+
+> "In our project, we used CloudWatch to monitor EC2 instances, application logs, and infrastructure metrics.
+We configured CloudWatch Alarms for critical thresholds such as CPU, memory, and disk utilization. 
+Whenever an alarm was triggered, CloudWatch sent notifications through SNS to the DevOps team via email, allowing us to respond quickly and minimize downtime."
+
+---
+
+### One-Line Interview Answer
+
+> **CloudWatch monitors AWS resources, and SNS sends alerts to the team when CloudWatch detects issues.**
+=============================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+
+
+SNS (Simple Notification Service) we used to get notifications 
+
+Search SNS in AWS Dashboard ----------> create topic --------> standard ---------> name: mytopic ----------> Display name: my devops --------------> create topic 
+
+we need to take an subscription here to get mails who want to get mails means integrating our mail here
+
+create subscription -----------> protocol: email ----------> Endpoint: gorantlapranay8@gmail.com -------------> create subsription 
+
+Publish Message: ------------> subject: name: my subject ---------> Hey today i am learning SNS & Cloud Watch ------> publish message
+
+we need to get alarm and notifications by using SNS & Cloud Watch
+
+SNS we used to get notifications to our mails
+
+Cloud Watch we used to get Alarms to our servers if the servers got reached CPU threshold above 60%
+
+Cloud Watch we used to monitor the ec2-instances and to store logs as well and we will use different purposes as well
+
+Search Cloud Watch in AWS Dashboard
+
+First launch an ec2-instance ---------> name: Cloud Watch -----------> t3.micro ---------> with keypair ---------> ebs: 10 gb -----------> launch and connect
+
+Now we will do connect this ec2-instance to a Cloud watch like integrating this cloud watch to ec2-instance
+
+Search Cloud Watch in AWS Dashboard -------------> create dashboard -------------> name: server status ---------> create 
+
+                                            or 
+
+select create alarm -----------> select metrics: select ec2 -------> per-instace Metrics ---------> Now here copy & paste our created ec2-instance id here ---------->  select our 
+ec2-instance cpu utilization click on + symbol ------->select metric -------> statistics: average ---------> period: 1 Minute -------> greater: than: 60 ---------> next ------------>
+select new topic --------> create a new topic: my_instance_status ------> email:gorantlapranay8@gmail.com --------------> create topic ------------->select Auto Scaling Groups:select here 
+a created auto scaling group to integrate  ------------> select Ec2 action: in alarm -----------> next ---------> confirm subscription ---------> next ---------> alarm name: my alarm
+----------> create alarm
+
+select created alarm ----------> dashboard will shown here of ec2-instance cpu utilization
+
+
+yum install stress -y ----------------------------------------------------------------------->
+
+stress -c 2 -t 300 -y ----------------------------------------------------------------------->
+
 
