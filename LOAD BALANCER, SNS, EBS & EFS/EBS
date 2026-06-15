@@ -1,5 +1,36 @@
-EBS
-========
+EBS (Elastic Block Storage)
+============================
+
+we can attach upto 16 volumes for an Ec2-Instance
+
+A Volume minimum size is 1 GB and for a server having  root device & non-root device that means while creating an ec2-instance one ebs volume will get attach to it for that default volume we
+can called it as root volume for this default minimum size size is 8 GB but not less than this 8 GB why means for that server already OS related files will be present in it. 
+
+
+lets do practically 
+
+First launch an one instance ---------->name: server-1 ---------> with key pair ------------> MySg --------> ebs: 8 gb ---------> launch and connect ec2-instance
+
+fdisk -l ------------------> command to view attached disk volume to an instance 
+
+Select volume -----------> create volume --------> volume type: General purpose SSD (gp3) gp means general purpose -----------> size:12 GB ------> IOPS:3000 ------------> Throughtout: 125 -----
+--------> availability zone: select where we want -----------> snapshot  will not get created here ------------> Add a new tag:Name: DevOps -------------> Create Volume
+
+Now we want attach this Volume to an ec2-instance here ------------> select created volume -----------> actions ---------> attach Volume: select here our server -----------> Device name:
+/dev/xvdb/ ------------> attach volume 
+
+file -s /dev/device name ----------------------->
+mkfs -t xfs device name ------------------->
+
+mkdir pranay ---------------------------------->
+
+mount /dev/device name folder name pranay ----------------------->
+
+fdisk -l ------------------------------------------->
+
+df -h ----------------------------------------->
+
+
 
 
 
