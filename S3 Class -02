@@ -212,6 +212,82 @@ the above pipeline is S3 plugin is configured only
 
 if not configured means kindly write pipeline manually like below 
 
+Step 1: Open Jenkins Credentials
+
+Go to:
+
+Dashboard → Manage Jenkins → Credentials
+
+Step 2: Open Global Credentials
+
+Click:
+
+System → Global credentials (unrestricted)
+
+Step 3: Add a new credential
+
+Click:
+
+Add Credentials
+
+Step 4: Select the credential type
+
+In Kind, select:
+
+AWS Credentials
+
+If you do not see "AWS Credentials" in the Kind list, then the AWS Credentials Plugin is not installed.
+
+Step 5: Enter your AWS credentials
+
+Fill in:
+
+Access Key ID:
+<your AWS Access Key>
+
+Secret Access Key:
+<your AWS Secret Key>
+
+ID:
+aws-credentials
+
+Description:
+AWS Credentials
+
+Important:
+
+The ID must be exactly:
+
+aws-credentials
+
+because your pipeline contains:
+
+credentialsId: 'aws-credentials'
+
+These two values must match exactly.
+
+Step 6: Save
+
+Click:
+
+Create
+Step 7: Run the pipeline again
+
+Click:
+
+Build Now
+
+Manage Jenkins
+    ↓
+Plugins
+    ↓
+Available Plugins
+
+AWS Credentials
+
+Install it and restart Jenkins.
+
+
 
 pipeline {
     agent any
@@ -244,7 +320,7 @@ pipeline {
                     $class: 'AmazonWebServicesCredentialsBinding',
                     credentialsId: 'aws-credentials'
                 ]]) {
-                    sh 'aws s3 cp target/*.war s3://jaisri.2026.ram /'
+                    sh 'aws s3 cp target/*.war s3://jaisri.2026.ram/'
                 }
             }
         }
