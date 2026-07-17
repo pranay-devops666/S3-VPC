@@ -244,7 +244,7 @@ pipeline {
                     $class: 'AmazonWebServicesCredentialsBinding',
                     credentialsId: 'aws-credentials'
                 ]]) {
-                    sh 'aws s3 cp target/*.war s3://aws.devops.film77/'
+                    sh 'aws s3 cp target/*.war s3://jaisri.2026.ram /'
                 }
             }
         }
