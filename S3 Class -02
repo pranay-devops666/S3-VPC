@@ -331,6 +331,62 @@ pipeline {
 save and build
 
 
+
+Pipeline to delete the uploaded files or objects in S3 bucket
+====================================================================
+
+pipeline {
+    agent any
+
+    tools {
+        maven 'mymaven'
+    }
+
+    environment {
+        AWS_DEFAULT_REGION = 'us-east-1'
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/pranay-devops666/one.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'mvn clean package -DskipTests'
+            }
+        }
+
+        stage('Upload to S3') {
+            steps {
+                withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'aws-credentials'
+                ]]) {
+                    sh 'aws s3 cp target/*.war s3://jaisri.2026.ram/'
+                }
+            }
+        }
+
+        stage('Delete WAR from S3') {
+            steps {
+                withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'aws-credentials'
+                ]]) {
+                    sh 'aws s3 rm s3://jaisri.2026.ram/myweb-8.7.1.war'
+                }
+            }
+        }
+    }
+}
+
+
+save and build
+
 To create S3  1.Through Terraform File
 =========================================
 
