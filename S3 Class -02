@@ -153,6 +153,105 @@ pipeline {
 }
 
 
+pipeline {
+    agent any
+
+    tools {
+        maven 'mymaven'
+    }
+
+    stages {
+
+        stage('Code') {
+            steps {
+                git 'https://github.com/pranay-devops666/one.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'mvn clean package -DskipTests'
+            }
+        }
+
+        stage('Unit Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+
+        stage('Upload Artifact to S3') {
+            steps {
+                s3Upload(
+                    profileName: 'mybucket',
+                    consoleLogLevel: 'INFO',
+                    dontSetBuildResultOnFailure: false,
+                    dontWaitForConcurrentBuildCompletion: false,
+                    pluginFailureResultConstraint: 'FAILURE',
+                    userMetadata: [],
+                    entries: [[
+                        bucket: 'jaisri.2026.ram',
+                        sourceFile: 'target/*.war',
+                        selectedRegion: 'us-east-1',
+                        flatten: false,
+                        managedArtifacts: false,
+                        noUploadOnFailure: true,
+                        keepForever: false,
+                        uploadFromSlave: false,
+                        useServerSideEncryption: false,
+                        showDirectlyInBrowser: false,
+                        storageClass: 'STANDARD'
+                    ]]
+                )
+            }
+        }
+    }
+}
+
+the above pipeline is S3 plugin is configured only 
+
+if not configured means kindly write pipeline manually like below 
+
+
+pipeline {
+    agent any
+
+    tools {
+        maven 'mymaven'
+    }
+
+    environment {
+        AWS_DEFAULT_REGION = 'us-east-1'
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/pranay-devops666/one.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'mvn clean package -DskipTests'
+            }
+        }
+
+        stage('Upload to S3') {
+            steps {
+                withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'aws-credentials'
+                ]]) {
+                    sh 'aws s3 cp target/*.war s3://aws.devops.film77/'
+                }
+            }
+        }
+
+    }
+}
+
 save and build
 
 
