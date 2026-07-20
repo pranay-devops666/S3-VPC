@@ -142,17 +142,29 @@ save and quit
 
 chmod 400 Anjeneyakeypair.pem ---------------->
 
+
+
 Now connect select app-server copy and paste example command to connect in new ec2-instance 
 
 succesfully connected 
 
+
+
 Now need to get the code 
+
+
 
 yum install git -y ----------------------------->
 
 git clone "https://github.com/ltibbhackathon.git" ----------------------------->
 
 yum install httpd -y && systemctl start httpd ------------------------->
+
+install php dependencies also to work database connection successfully means
+
+search as install php on amazon-linux ---------------> 
+
+sudo amazon-linux-extras enable php8.2 ---------------------------------->  
 
 Now need to move all these files to a default path or copy is also fine
 
