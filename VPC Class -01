@@ -13,9 +13,15 @@ request will go to first public subnet again here ROUTE TABLE will present here,
 (Network Address Translator)(NAT) what NAT will do is if the credentials all are correct means it will call to API, so through this NAT the request will go from public 
 subnet to private subnet, in here private subnet having server application so finally this application output will show.
 
+Whole Network is VPC dividing vpc into a small parts called Subnets. In here there are two types of Subnets
+
 Subnets has 2 types 1. Public Subnet & 2. Private Subnet
 
-IGW-------> ROUTE TABLE-----> PUBLIC SUBNET------>PRIVATE SUBNET
+IGW-------> ROUTE TABLE-----> PUBLIC SUBNET------>NAT ---------------------> PRIVATE SUBNET
+
+First Internet Request will go to InternetGateWay this IGW will take into a frontend like login page--------------------> after that Route Table will do check with
+credentials in login page if gthe credentials are correct means -----------> now it will take into a Public Subnet ------------> after that Public Subnet will take
+into a NAT -----------> After that NAT will take into a Private Subnet
 
 Lets create VPC like realtime below
 
@@ -30,6 +36,8 @@ created inside this subnets for every server will have a public IP & private Ip 
 what is meat by subnet is by dividing a large network into a small small networks called as subnets.
 
 aws subnet calculator ----------> go to this website to know how much need to maintain cidr everything
+
+https://docs.aws.amazon.com/vpc/latest/userguide/subnet-sizing.html----------------------> reference to read Network ips
 
 
 
