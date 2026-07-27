@@ -7,7 +7,7 @@ we will start learning how to create VPC in AWS dashboard like below
 
 first we will do create VPC through that VPC we will do create subnets
 
-IGW-------> Route Table-----> Subnets --------> Public subnet -----> private subnet
+IGW-------> Route Table-----> Subnets --------> Public subnet -----> NAT -----------> private subnet
 
 search as vpc and select create VPC -------> name: myvpc --------> cidr range: 10.0.0.0/16 -------> select tenancy: dedicated(we will use this dedicated in 
 real time) dedicated means private for now here select default means public ----------> create VPC
